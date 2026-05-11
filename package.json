@@ -3,13 +3,20 @@
   "private": true,
   "type": "module",
   "packageManager": "pnpm@10.24.0",
+  "engines": {
+    "node": ">=22.12.0"
+  },
   "scripts": {
     "dev": "pnpm --filter @astro-website-demo/web dev",
     "build": "pnpm --filter @astro-website-demo/web build",
     "check": "pnpm --filter @astro-website-demo/web check",
     "preview": "pnpm --filter @astro-website-demo/web preview",
     "generate-types": "pnpm --filter @astro-website-demo/web generate-types",
-    "deploy": "pnpm build && pnpm -C apps/web exec wrangler deploy",
-    "deploy:wrangler": "pnpm -C apps/web exec wrangler deploy"
+    "deploy": "pnpm build && pnpm exec wrangler deploy --cwd apps/web",
+    "deploy:wrangler": "pnpm exec wrangler deploy --cwd apps/web",
+    "deploy:npx": "pnpm build && npx --yes wrangler@4.90.0 deploy --cwd apps/web"
+  },
+  "devDependencies": {
+    "wrangler": "^4.90.0"
   }
 }
