@@ -8,6 +8,8 @@
     "build": "pnpm --filter @astro-website-demo/web build",
     "check": "pnpm --filter @astro-website-demo/web check",
     "preview": "pnpm --filter @astro-website-demo/web preview",
-    "generate-types": "pnpm --filter @astro-website-demo/web generate-types"
+    "generate-types": "pnpm --filter @astro-website-demo/web generate-types",
+    "deploy": "pnpm build && pnpm -C apps/web exec wrangler deploy",
+    "deploy:wrangler": "pnpm -C apps/web exec wrangler deploy"
   }
 }
