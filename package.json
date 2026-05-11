@@ -1,0 +1,13 @@
+{
+  "name": "astro-website-demo",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.24.0",
+  "scripts": {
+    "dev": "pnpm --filter @astro-website-demo/web dev",
+    "build": "pnpm --filter @astro-website-demo/web build",
+    "check": "pnpm --filter @astro-website-demo/web check",
+    "preview": "pnpm --filter @astro-website-demo/web preview",
+    "generate-types": "pnpm --filter @astro-website-demo/web generate-types"
+  }
+}
