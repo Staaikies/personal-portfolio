@@ -1,13 +1,14 @@
-// @ts-nocheck — Vite plugin typings can disagree between Astro's Vite and @tailwindcss/vite.
+// @ts-nocheck: Vite plugin typings can disagree between Astro's Vite and @tailwindcss/vite.
 import { defineConfig } from 'astro/config';
 
 import react from '@astrojs/react';
 import tailwindcss from '@tailwindcss/vite';
 
 /**
- * GitHub Pages: project sites live at https://OWNER.github.io/REPO/
- * In GitHub Actions, GITHUB_REPOSITORY_OWNER and GITHUB_REPOSITORY are set automatically.
- * For a user/org site repo named OWNER.github.io, base is "/".
+ * GitHub Pages only static build:
+ * - `site` + `base` from `GITHUB_REPOSITORY_*` in CI (local dev defaults to `/`).
+ * - `trailingSlash: 'always'` on project pages so URLs stay consistent under `/REPO/`.
+ * - `build.assets: 'astro'` (no `_astro/`) and `inlineStylesheets: 'always'` so styles are not a separate fetch.
  */
 const owner = process.env.GITHUB_REPOSITORY_OWNER;
 const repoFull = process.env.GITHUB_REPOSITORY;
@@ -34,14 +35,15 @@ export default defineConfig({
   base,
   trailingSlash,
   output: 'static',
-  // Emit hashed assets under `astro/` instead of `_astro/`. Jekyll (and some branch-based
-  // Pages setups) ignore paths starting with `_`, which breaks CSS/JS if `.nojekyll` is absent.
   build: {
     assets: 'astro',
+    inlineStylesheets: 'always',
   },
   integrations: [react()],
 
   vite: {
+    // Keep Vite base aligned with Astro `base` (Tailwind + subpath deploys).
+    base,
     plugins: [tailwindcss()],
   },
 });

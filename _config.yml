@@ -1,7 +1,0 @@
-# If GitHub Pages uses legacy "Deploy from a branch", Jekyll scans the repo and
-# treats Astro `---` delimiters as YAML. Exclude the app tree so builds do not fail.
-# Preferred setup: Settings → Pages → Source → GitHub Actions (this repo’s workflow
-# publishes prebuilt files from apps/web/dist).
-exclude:
-  - apps
-  - node_modules

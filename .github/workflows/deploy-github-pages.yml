@@ -43,7 +43,7 @@ jobs:
           GITHUB_REPOSITORY_OWNER: ${{ github.repository_owner }}
           GITHUB_REPOSITORY: ${{ github.repository }}
 
-      - name: Verify Pages asset URLs
+      - name: Verify Pages base in HTML
         shell: bash
         run: |
           set -euo pipefail
@@ -52,10 +52,11 @@ jobs:
           RLOW=$(echo "$REPO" | tr '[:upper:]' '[:lower:]')
           OLOW=$(echo "$OWNER" | tr '[:upper:]' '[:lower:]')
           HTML="apps/web/dist/index.html"
+          # Styles are inlined; font files still load from /REPO/astro/... (build.assets + base).
           if [ "$RLOW" = "$OLOW.github.io" ]; then
-            grep -Fq 'href="/astro/' "$HTML" || { echo "Expected root-relative /astro/ stylesheet URL"; exit 1; }
+            grep -Fq 'url(/astro/' "$HTML" || { echo "Expected root-relative /astro/ asset URLs in HTML"; exit 1; }
           else
-            grep -Fq "href=\"/${REPO}/astro/" "$HTML" || { echo "Expected /${REPO}/astro/ stylesheet URL"; head -c 2500 "$HTML"; exit 1; }
+            grep -Fq "url(/${REPO}/astro/" "$HTML" || { echo "Expected /${REPO}/astro/ asset URLs in HTML"; head -c 2500 "$HTML"; exit 1; }
           fi
 
       - name: Upload artifact
