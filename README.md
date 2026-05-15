@@ -30,9 +30,15 @@ pnpm preview
 ## GitHub Pages
 
 1. In the repository, go to **Settings → Pages**.
-2. Under **Build and deployment**, set **Source** to **GitHub Actions**. Do **not** use **Deploy from a branch**. Branch-based Pages runs **Jekyll** on your repository; it will try to parse every file (including `*.astro`) as Jekyll content. Astro pages start with `---`, which Jekyll treats as YAML front matter, so you get errors like `Invalid YAML front matter in .../index.astro`. This site is pre-built by the workflow; only the static output in `apps/web/dist` should be published.
-3. After switching to GitHub Actions, wait for the **Deploy GitHub Pages** workflow to finish (or push again / run **Actions → Deploy GitHub Pages → Run workflow**). The workflow installs dependencies with **pnpm** (version comes from the `packageManager` field in the root `package.json`), runs `pnpm build`, and uploads `apps/web/dist` as the Pages artifact.
+2. Under **Build and deployment**, open the **Source** dropdown and select **GitHub Actions**. Save if prompted. Do **not** leave **Deploy from a branch** selected (even temporarily): that path runs **Jekyll** on the whole repository and fails on `*.astro` files (`Invalid YAML front matter in .../index.astro`).
+3. After the source is **GitHub Actions**, push to **`main`** or **`master`**, or open **Actions → Deploy GitHub Pages → Run workflow**. A successful publish is the workflow named **Deploy GitHub Pages** (this repository’s workflow file). The workflow uses **pnpm** from the root `packageManager` field, runs `pnpm build`, and uploads **`apps/web/dist`** as the Pages artifact.
 
 The Astro config sets `site` and `base` from `GITHUB_REPOSITORY_OWNER` and `GITHUB_REPOSITORY` in CI so project pages resolve assets at `https://<owner>.github.io/<repo>/`. For a repository named `<owner>.github.io`, `base` is `/`.
 
 If your default branch is neither `main` nor `master`, update the `on.push.branches` list in the workflow file.
+
+### If the failing run is named “pages build and deployment”
+
+That log line (`jekyll v3.10.0`, `Invalid YAML front matter in .../index.astro`) is **not** from the Astro build. It is GitHub’s **built-in** Pages job that still thinks the site is published **from a branch** (Jekyll over the repo). Fix it only in **Settings → Pages → Source → GitHub Actions**. Until that is saved, the **Deploy GitHub Pages** workflow cannot replace that pipeline.
+
+This repo also includes a root **`.nojekyll`** (and **`_config.yml`** excluding `apps/`) so a misconfigured branch-based publish is less likely to crash on Jekyll. Your real site content still comes from the **GitHub Actions** artifact (`apps/web/dist`); branch-based publishing from this monorepo root does not contain a built `index.html` for the app.
