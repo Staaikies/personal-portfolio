@@ -19,14 +19,26 @@ let site;
 let base = '/';
 
 if (owner && repo) {
-  site = `https://${owner}.github.io`;
-  base = repo === `${owner}.github.io` ? '/' : `/${repo}`;
+  // Host is case-insensitive; normalize so canonical URLs match the live github.io host.
+  const hostOwner = String(owner).toLowerCase();
+  site = `https://${hostOwner}.github.io`;
+  base =
+    repo.toLowerCase() === `${hostOwner}.github.io` ? '/' : `/${repo}`;
 }
+
+/** GitHub project pages work more reliably with trailing-slash URLs and BASE_URL. */
+const trailingSlash = base === '/' ? 'ignore' : 'always';
 
 export default defineConfig({
   ...(site ? { site } : {}),
   base,
+  trailingSlash,
   output: 'static',
+  // Emit hashed assets under `astro/` instead of `_astro/`. Jekyll (and some branch-based
+  // Pages setups) ignore paths starting with `_`, which breaks CSS/JS if `.nojekyll` is absent.
+  build: {
+    assets: 'astro',
+  },
   integrations: [react()],
 
   vite: {
