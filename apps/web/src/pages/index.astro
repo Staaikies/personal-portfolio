@@ -2,53 +2,170 @@
 import { StackShowcase } from "@/components/StackShowcase"
 import "../styles/global.css"
 
+const year = new Date().getFullYear()
 ---
 
-<html lang="en" class="dark">
+<html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
+		<link rel="icon" href="/favicon.svg?v=1" type="image/svg+xml" sizes="any" />
 		<meta name="viewport" content="width=device-width" />
+		<meta name="theme-color" content="#fff7f0" />
 		<meta name="generator" content={Astro.generator} />
 		<meta
 			name="description"
-			content="A modern Astro portfolio built with React 19, Tailwind CSS v4, shadcn/ui, Hono, and Cloudflare Workers."
+			content="Skylar — frontend developer focused on fast, accessible interfaces, TypeScript, React, Astro, and shipping on the edge with Cloudflare."
 		/>
 		<title>Skylar | Frontend Developer</title>
 	</head>
-	<body class="min-h-screen bg-slate-950 text-white antialiased">
-		<main class="relative isolate overflow-hidden">
-			<div class="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top_left,rgba(34,211,238,0.24),transparent_34rem),radial-gradient(circle_at_80%_10%,rgba(168,85,247,0.18),transparent_30rem),linear-gradient(180deg,#020617_0%,#0f172a_100%)]"></div>
-			<div class="absolute inset-0 -z-10 bg-[linear-gradient(rgba(255,255,255,0.035)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.035)_1px,transparent_1px)] bg-[size:72px_72px] [mask-image:linear-gradient(to_bottom,black,transparent_80%)]"></div>
+	<body class="min-h-screen bg-[linear-gradient(168deg,#fffbf7_0%,#fff7f0_38%,#faf7ff_72%,#fefcfb_100%)] text-stone-800 antialiased">
+		<main class="relative isolate overflow-x-clip overflow-y-visible">
+			<!-- Playful slow-spinning shapes (stay in-bounds so layout is not clipped) -->
+			<div class="pointer-events-none absolute inset-0 -z-[5] overflow-hidden" aria-hidden="true">
+				<div
+					class="deco-spin-slow absolute left-[4%] top-[12%] size-20 rounded-2xl border-2 border-orange-400/35 shadow-sm shadow-orange-200/20 sm:size-24"
+				>
+				</div>
+				<div
+					class="deco-spin-reverse absolute right-[6%] top-[22%] size-16 rounded-full border-2 border-violet-400/30 sm:right-[8%] sm:size-20"
+				>
+				</div>
+				<div
+					class="deco-spin-slower absolute bottom-[38%] left-[2%] flex size-14 items-center justify-center sm:left-[5%] sm:size-16"
+				>
+					<div class="size-10 rotate-45 rounded-lg border-2 border-orange-300/40 sm:size-11"></div>
+				</div>
+				<div
+					class="deco-spin-slow absolute bottom-[18%] right-[10%] size-[4.5rem] rounded-3xl border border-violet-300/35 sm:size-24"
+				>
+				</div>
+				<div
+					class="deco-spin-reverse absolute left-[42%] top-[8%] hidden size-12 rounded-full border-2 border-dashed border-orange-400/25 md:block lg:left-[48%]"
+				>
+				</div>
+				<div
+					class="deco-spin-slower absolute bottom-[8%] left-[18%] size-11 rounded-xl border border-orange-400/30 sm:size-12"
+				>
+				</div>
+			</div>
+			<!-- Warm wash + whisper violet (kept low chroma so it stays soft) -->
+			<div
+				class="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(ellipse_90%_55%_at_0%_-15%,rgba(251,146,60,0.16),transparent_55%),radial-gradient(ellipse_70%_45%_at_100%_-5%,rgba(196,181,253,0.14),transparent_50%),radial-gradient(ellipse_55%_40%_at_50%_105%,rgba(254,215,170,0.28),transparent_55%)]"
+			>
+			</div>
+			<div
+				class="pointer-events-none absolute inset-0 -z-10 bg-[linear-gradient(rgba(120,113,108,0.045)_1px,transparent_1px),linear-gradient(90deg,rgba(120,113,108,0.045)_1px,transparent_1px)] bg-[size:68px_68px] [mask-image:linear-gradient(to_bottom,black_0%,black_55%,transparent_100%)]"
+			>
+			</div>
+			<!-- Soft vignette so the page feels gently contained -->
+			<div class="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(ellipse_85%_70%_at_50%_40%,transparent_40%,rgba(255,247,237,0.85)_100%)]"></div>
 
-			<section class="mx-auto grid min-h-screen max-w-6xl gap-12 px-6 py-20 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
-				<div>
-					<p class="mb-5 inline-flex rounded-full border border-cyan-300/20 bg-cyan-300/10 px-4 py-2 text-sm font-medium text-cyan-100">
-						Astro marketing site on Cloudflare Workers
-					</p>
-					<h1 class="max-w-4xl text-5xl font-semibold tracking-tight text-balance sm:text-7xl">
-						Frontend craft, full-stack systems, and AI-powered delivery.
+			<section class="mx-auto grid min-h-screen max-w-6xl gap-10 px-4 py-16 sm:gap-12 sm:px-6 sm:py-20 lg:grid-cols-[1.1fr_0.9fr] lg:items-start lg:gap-14">
+				<div class="min-w-0">
+					<h1 class="max-w-4xl text-4xl font-semibold tracking-tight text-balance text-stone-900 sm:text-5xl sm:leading-[1.05] md:text-6xl lg:text-7xl">
+						<span class="block">Frontend craft,</span>
+						<span
+							class="block bg-gradient-to-r from-orange-600 via-orange-500 to-violet-500 bg-clip-text text-transparent [text-shadow:none]"
+						>
+							full-stack systems,
+						</span>
+						<span class="block text-stone-800">and AI-powered delivery.</span>
 					</h1>
-					<p class="mt-6 max-w-2xl text-lg leading-8 text-slate-300">
-						I build fast, polished web experiences with TypeScript, React, Astro, Cloudflare Workers, and modern design systems. AI helps accelerate the loop; engineering judgment keeps the product sharp.
+					<p class="mt-6 max-w-2xl text-lg leading-8 text-stone-600">
+						I ship interfaces that feel intentional: performance, accessibility, and maintainability baked in from the first commit. Recent work spans design systems, full-stack TypeScript, and pragmatic use of AI in the delivery loop.
 					</p>
 					<div class="mt-8 flex flex-wrap gap-3">
-						<a class="rounded-lg bg-cyan-300 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200" href="#contact">
-							Start a conversation
+						<a
+							class="rounded-xl bg-gradient-to-br from-orange-600 via-orange-600 to-orange-700 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-orange-900/25 transition hover:from-orange-700 hover:via-orange-700 hover:to-orange-800 hover:shadow-orange-900/35"
+							href="#contact"
+						>
+							Get in touch
 						</a>
-						<a class="rounded-lg border border-white/15 bg-white/5 px-5 py-3 text-sm font-semibold text-white transition hover:bg-white/10" href="/api/health">
-							Check the Hono API
+						<a
+							class="inline-flex items-center gap-2 rounded-xl border border-stone-200/90 bg-white/85 px-5 py-3 text-sm font-semibold text-stone-800 shadow-sm shadow-stone-300/25 backdrop-blur-sm transition hover:border-violet-200/80 hover:bg-violet-50/50"
+							href="https://github.com/staaikies"
+							target="_blank"
+							rel="noopener noreferrer"
+						>
+							GitHub
+							<span class="font-normal text-stone-500">@staaikies</span>
 						</a>
 					</div>
 				</div>
 
-				<div class="rounded-[2rem] border border-white/10 bg-white/[0.04] p-4 shadow-2xl shadow-cyan-950/30 backdrop-blur">
-					<div class="grid aspect-square place-items-center rounded-[1.5rem] border border-dashed border-cyan-200/30 bg-slate-900/70 text-center">
-						<div>
-							<div class="mx-auto mb-4 grid size-24 place-items-center rounded-full bg-cyan-300/10 text-4xl">SK</div>
-							<p class="font-medium text-slate-100">Profile image placeholder</p>
-							<p class="mt-2 text-sm text-slate-400">Drop your portrait into `public/` and swap this card later.</p>
+				<div
+					class="min-w-0 rounded-[2rem] border border-orange-100/70 bg-white/90 p-4 shadow-[0_24px_60px_-12px_rgba(251,146,60,0.14)] sm:bg-white/80 sm:p-5 lg:p-6"
+				>
+					<div class="mx-auto flex w-full max-w-md flex-col items-center gap-6 sm:max-w-lg lg:max-w-none">
+						<div
+							class="relative w-full max-w-[min(100%,17.1rem)] perspective-[1000px] sm:max-w-[min(100%,19.8rem)] md:max-w-[min(100%,22.5rem)]"
+						>
+							<div
+								class="pointer-events-none absolute inset-0 translate-x-3 translate-y-4 rotate-[-5deg] scale-[0.98] rounded-[1.85rem] bg-gradient-to-br from-orange-200/45 to-amber-100/35 shadow-lg shadow-orange-200/20 sm:translate-x-4 sm:translate-y-5"
+								aria-hidden="true"
+							>
+							</div>
+							<div
+								class="pointer-events-none absolute inset-0 -translate-x-2 translate-y-2 rotate-[4deg] rounded-[1.7rem] border border-violet-200/50 bg-violet-50/35 sm:-translate-x-2.5 sm:translate-y-2.5"
+								aria-hidden="true"
+							>
+							</div>
+							<figure
+								class="group relative z-10 mx-auto w-max max-w-full rotate-[-2deg] transform-gpu backface-hidden transition duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:rotate-0 hover:-translate-y-1"
+							>
+								<div
+									class="rounded-[1.75rem] bg-gradient-to-br from-orange-300/90 via-white to-violet-300/75 p-[2.5px] shadow-[0_20px_40px_-12px_rgba(120,53,15,0.18),0_0_0_1px_rgba(255,255,255,0.6)_inset] sm:rounded-[1.9rem] sm:p-[3px]"
+								>
+									<div class="overflow-hidden rounded-[1.6rem] bg-stone-100 p-[3px] sm:rounded-[1.75rem] sm:p-1">
+										<img
+											src="/skylardryden.jpg"
+											alt="Skylar Dryden"
+											class="aspect-[4/5] w-full rounded-[1.35rem] object-cover sm:rounded-[1.5rem]"
+											width="960"
+											height="1200"
+											loading="eager"
+											decoding="async"
+											fetchpriority="high"
+											sizes="(max-width: 640px) 82vw, (max-width: 768px) 20rem, 22.5rem"
+										/>
+									</div>
+								</div>
+								<div
+									class="pointer-events-none absolute inset-0 rounded-[1.6rem] bg-gradient-to-tr from-transparent via-white/0 to-white/20 opacity-0 transition duration-500 group-hover:opacity-100 sm:rounded-[1.75rem]"
+									aria-hidden="true"
+								>
+								</div>
+								<div
+									class="pointer-events-none absolute -bottom-1 -right-1 z-20 size-9 rounded-full bg-gradient-to-br from-orange-400 to-violet-500 shadow-md shadow-orange-400/30 ring-[3px] ring-[#fffbf7] sm:size-10"
+									aria-hidden="true"
+								>
+								</div>
+							</figure>
+						</div>
+						<div class="w-full min-w-0 text-center lg:max-w-xl lg:justify-self-start lg:text-left">
+							<p class="text-sm leading-relaxed text-stone-600 sm:text-base sm:leading-relaxed">
+								Hi! I am Skylar. I care about clear information hierarchy, resilient components, and the small
+								details that make a UI feel trustworthy. When I am not shipping, I am probably refining a design
+								token or chasing a perf win.
+							</p>
+							<div class="mt-5 border-t border-orange-100/70 pt-5">
+								<div
+									class="flex w-full flex-row flex-wrap items-end justify-between gap-x-4 gap-y-2 sm:items-baseline"
+								>
+									<div class="min-w-0 text-left">
+										<p class="text-lg font-semibold tracking-tight text-stone-900">Skylar Dryden</p>
+										<p class="mt-0.5 text-sm text-stone-500">Frontend developer</p>
+									</div>
+									<a
+										class="shrink-0 text-sm font-medium text-violet-700 underline decoration-violet-300/80 underline-offset-[5px] transition hover:text-violet-800 hover:decoration-violet-400"
+										href="https://github.com/staaikies"
+										target="_blank"
+										rel="noopener noreferrer"
+									>
+										github.com/staaikies
+									</a>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -57,25 +174,41 @@ import "../styles/global.css"
 			<section class="mx-auto max-w-6xl px-6 pb-24">
 				<div class="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
 					<div>
-						<p class="text-sm font-semibold uppercase tracking-[0.25em] text-cyan-200">Stack</p>
-						<h2 class="mt-3 text-3xl font-semibold tracking-tight">Modern TypeScript from UI to edge.</h2>
-						<p class="mt-4 text-slate-300">
-							This repo is set up as a pnpm monorepo with Astro, React 19 islands, Tailwind CSS v4, shadcn/ui Base + Nova, and a Hono API running inside the Cloudflare Worker.
+						<p class="text-sm font-semibold uppercase tracking-[0.25em] text-violet-600/90">Stack</p>
+						<h2 class="mt-3 text-3xl font-semibold tracking-tight text-stone-900">Modern TypeScript from UI to edge.</h2>
+						<p class="mt-4 text-stone-600">
+							I work across the stack with a bias toward the UI layer: component architecture, tokens and theming, and shipping static and edge-rendered sites that stay fast under real traffic.
 						</p>
 					</div>
 					<StackShowcase client:load />
 				</div>
 			</section>
 
-			<section id="contact" class="mx-auto max-w-6xl px-6 pb-24">
-				<div class="rounded-3xl border border-white/10 bg-white/[0.04] p-8 backdrop-blur">
-					<p class="text-sm font-semibold uppercase tracking-[0.25em] text-cyan-200">Next</p>
-					<h2 class="mt-3 text-3xl font-semibold tracking-tight">Ready for projects, case studies, and contact wiring.</h2>
-					<p class="mt-4 max-w-3xl text-slate-300">
-						Add real project cards, replace the profile placeholder, and connect `/api/contact` to your preferred email or storage provider when you are ready to publish.
+			<section id="contact" class="mx-auto max-w-6xl px-6 pb-28">
+				<div
+					class="rounded-3xl border border-orange-100/90 bg-gradient-to-br from-white/95 via-orange-50/40 to-violet-50/35 p-8 shadow-[0_20px_50px_-18px_rgba(251,146,60,0.15)] backdrop-blur-sm"
+				>
+					<p class="text-sm font-semibold uppercase tracking-[0.25em] text-orange-600">Contact</p>
+					<h2 class="mt-3 text-3xl font-semibold tracking-tight text-stone-900">Open to collaborations and well-scoped product work.</h2>
+					<p class="mt-4 max-w-3xl text-stone-600">
+						If you are hiring, need a frontend lead for a milestone, or want to compare notes on a technical direction, send a short note with context and timeline. I respond fastest to messages that spell out goals, constraints, and how you measure success.
+					</p>
+					<p class="mt-6 text-sm text-stone-500">
+						Prefer code first?
+						<a
+							class="ml-1 font-medium text-violet-700 underline decoration-violet-300/80 underline-offset-[5px] transition hover:text-violet-800"
+							href="https://github.com/staaikies"
+							target="_blank"
+							rel="noopener noreferrer"
+						>
+							Browse work on GitHub
+						</a>
 					</p>
 				</div>
 			</section>
 		</main>
+		<footer class="mx-auto max-w-6xl border-t border-orange-100/50 px-6 py-10 text-center text-sm text-stone-500">
+			© Skylar Dryden {year}
+		</footer>
 	</body>
 </html>

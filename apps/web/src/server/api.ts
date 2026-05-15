@@ -25,9 +25,6 @@ api.get("/profile", (c) =>
       "Astro",
       "React 19",
       "TypeScript",
-      "Tailwind CSS v4",
-      "shadcn/ui",
-      "Hono",
       "Cloudflare Workers",
       "pnpm monorepo",
       "Vite",
@@ -55,7 +52,7 @@ api.post("/contact", async (c) => {
   return c.json(
     {
       ok: true,
-      message: "Contact form validated. Wire this route to email or storage when ready.",
+      message: "Thanks — your message was received. I will follow up when this endpoint is connected to mail or storage.",
     },
     202
   )
