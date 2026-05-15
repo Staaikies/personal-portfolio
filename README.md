@@ -6,9 +6,7 @@ Astro portfolio/marketing site built as static HTML and deployed with GitHub Pag
 
 - pnpm workspace
 - Astro 5 (static output)
-- React 19 islands
 - Tailwind CSS v4
-- shadcn/ui Base + Nova
 
 ## Local Development
 
@@ -32,9 +30,9 @@ pnpm preview
 1. **Settings → Pages → Build and deployment → Source:** choose **GitHub Actions** (not “Deploy from a branch”).
 2. Push to **`main`** or **`master`**, or run **Actions → Deploy GitHub Pages**. The workflow builds `apps/web` and publishes **`apps/web/dist`**.
 
-In CI, Astro gets **`site`** and **`base`** from `GITHUB_REPOSITORY_OWNER` and `GITHUB_REPOSITORY` (repo slug is lowercased for `base`). **`PUBLIC_SITE_URL`** and **`PUBLIC_BASE_PATH`** are optional Actions **Variables** if your public URL does not match that default (for example a custom domain or a path that is not the repo name).
+Astro is configured for the live URL **`https://skylardryden.com/personal-portfolio/`**.
 
-**Static files** (favicon, profile photo) live in **`apps/web/public/`** and are referenced as **`import.meta.env.BASE_URL` + filename** in pages—no bundling step for those.
+The build is intentionally simple: CSS is inlined into `index.html`, the stack section is static Astro, and the only external files are **`favicon.svg`** and **`skylardryden.jpg`** copied from **`apps/web/public/`**.
 
 If your default branch is not `main` or `master`, update `on.push.branches` in `.github/workflows/deploy-github-pages.yml`.
 

@@ -39,13 +39,6 @@ jobs:
 
       - name: Build
         run: pnpm build
-        env:
-          GITHUB_REPOSITORY_OWNER: ${{ github.repository_owner }}
-          GITHUB_REPOSITORY: ${{ github.repository }}
-          # Optional: custom domain and/or URL path when they differ from github.io defaults.
-          # Repo Settings → Secrets and variables → Actions → Variables
-          PUBLIC_SITE_URL: ${{ vars.PUBLIC_SITE_URL }}
-          PUBLIC_BASE_PATH: ${{ vars.PUBLIC_BASE_PATH }}
 
       - name: Verify dist output
         shell: bash
@@ -53,10 +46,14 @@ jobs:
           set -euo pipefail
           test -f apps/web/dist/index.html
           test -f apps/web/dist/skylardryden.jpg
-          test -d apps/web/dist/_astro
-          n=$(find apps/web/dist/_astro -type f | wc -l)
-          if [ "$n" -lt 2 ]; then echo "Missing files in dist/_astro"; ls -laR apps/web/dist; exit 1; fi
-          grep -q '_astro/' apps/web/dist/index.html
+          test -f apps/web/dist/favicon.svg
+          test -f apps/web/dist/.nojekyll
+          grep -q 'src="skylardryden.jpg"' apps/web/dist/index.html
+          grep -q 'href="favicon.svg?v=1"' apps/web/dist/index.html
+          if grep -q '_astro/' apps/web/dist/index.html; then
+            echo "Unexpected _astro asset references in index.html"
+            exit 1
+          fi
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

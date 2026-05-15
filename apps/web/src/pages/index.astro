@@ -1,18 +1,14 @@
 ---
-import { StackShowcase } from "@/components/StackShowcase"
+import StackShowcase from "@/components/StackShowcase.astro"
 import "../styles/global.css"
 
 const year = new Date().getFullYear()
-/** Public folder files: BASE_URL + name (https://docs.astro.build/en/guides/images/#images-in-the-public-folder) */
-const baseUrl = import.meta.env.BASE_URL.endsWith("/")
-	? import.meta.env.BASE_URL
-	: `${import.meta.env.BASE_URL}/`
 ---
 
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<link rel="icon" href={`${baseUrl}favicon.svg?v=1`} type="image/svg+xml" sizes="any" />
+		<link rel="icon" href="favicon.svg?v=1" type="image/svg+xml" sizes="any" />
 		<meta name="viewport" content="width=device-width" />
 		<meta name="theme-color" content="#fff7f0" />
 		<meta name="generator" content={Astro.generator} />
@@ -122,7 +118,7 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
 								>
 									<div class="overflow-hidden rounded-[1.6rem] bg-stone-100 p-[3px] sm:rounded-[1.75rem] sm:p-1">
 										<img
-											src={`${baseUrl}skylardryden.jpg`}
+											src="skylardryden.jpg"
 											alt="Skylar Dryden"
 											class="aspect-[4/5] w-full rounded-[1.35rem] object-cover sm:rounded-[1.5rem]"
 											width="960"
@@ -184,7 +180,7 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
 							I work across the stack with a bias toward the UI layer: component architecture, tokens and theming, and shipping static and edge-rendered sites that stay fast under real traffic.
 						</p>
 					</div>
-					<StackShowcase client:load />
+					<StackShowcase />
 				</div>
 			</section>
 
