@@ -1,16 +1,14 @@
 # Astro Website Demo
 
-Astro portfolio/marketing site deployed to Cloudflare Workers.
+Astro portfolio/marketing site built as static HTML and deployed with GitHub Pages.
 
 ## Stack
 
 - pnpm workspace
-- Astro 6
+- Astro 5 (static output)
 - React 19 islands
 - Tailwind CSS v4
 - shadcn/ui Base + Nova
-- Hono API under `/api/*`
-- Cloudflare Workers via `@astrojs/cloudflare`
 
 ## Local Development
 
@@ -29,32 +27,12 @@ pnpm build
 pnpm preview
 ```
 
-## Cloudflare Git Deploy
+## GitHub Pages
 
-This repository is a pnpm monorepo. Wrangler must deploy from `apps/web`, not from the workspace root, otherwise Wrangler will throw:
+1. In the repository, go to **Settings → Pages**.
+2. Under **Build and deployment**, set **Source** to **GitHub Actions** (not “Deploy from a branch”).
+3. Push to **`main`** or **`master`** (or run **Actions → Deploy GitHub Pages → Run workflow**). The workflow in `.github/workflows/deploy-github-pages.yml` installs dependencies, runs `pnpm build`, and publishes `apps/web/dist`.
 
-```txt
-The Wrangler application detection logic has been run in the root of a workspace instead of targeting a specific project.
-```
+The Astro config sets `site` and `base` from `GITHUB_REPOSITORY_OWNER` and `GITHUB_REPOSITORY` in CI so project pages resolve assets at `https://<owner>.github.io/<repo>/`. For a repository named `<owner>.github.io`, `base` is `/`.
 
-Use these settings in Cloudflare:
-
-- **Root directory:** repository root
-- **Install command:** `pnpm install --frozen-lockfile`
-- **Build command:** `pnpm build`
-- **Deploy command:** `pnpm deploy:wrangler`
-- **Node version:** `22.12.0` or newer
-
-If Cloudflare only gives you one command field, use:
-
-```sh
-pnpm install --frozen-lockfile && pnpm deploy
-```
-
-If you need the `npx` form, use:
-
-```sh
-pnpm install --frozen-lockfile && pnpm build && npx --yes wrangler@4.90.0 deploy --cwd apps/web
-```
-
-The important part is `--cwd apps/web`, which scopes Wrangler to the Astro Worker app.
+If your default branch is neither `main` nor `master`, update the `on.push.branches` list in the workflow file.

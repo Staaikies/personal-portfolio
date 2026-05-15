@@ -3,18 +3,21 @@ import { StackShowcase } from "@/components/StackShowcase"
 import "../styles/global.css"
 
 const year = new Date().getFullYear()
+const baseUrl = import.meta.env.BASE_URL.endsWith("/")
+	? import.meta.env.BASE_URL
+	: `${import.meta.env.BASE_URL}/`
 ---
 
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<link rel="icon" href="/favicon.svg?v=1" type="image/svg+xml" sizes="any" />
+		<link rel="icon" href={`${baseUrl}favicon.svg?v=1`} type="image/svg+xml" sizes="any" />
 		<meta name="viewport" content="width=device-width" />
 		<meta name="theme-color" content="#fff7f0" />
 		<meta name="generator" content={Astro.generator} />
 		<meta
 			name="description"
-			content="Skylar — frontend developer focused on fast, accessible interfaces, TypeScript, React, Astro, and shipping on the edge with Cloudflare."
+			content="Skylar — frontend developer focused on fast, accessible interfaces, TypeScript, React, Astro, and static sites on GitHub Pages."
 		/>
 		<title>Skylar | Frontend Developer</title>
 	</head>
@@ -118,7 +121,7 @@ const year = new Date().getFullYear()
 								>
 									<div class="overflow-hidden rounded-[1.6rem] bg-stone-100 p-[3px] sm:rounded-[1.75rem] sm:p-1">
 										<img
-											src="/skylardryden.jpg"
+											src={`${baseUrl}skylardryden.jpg`}
 											alt="Skylar Dryden"
 											class="aspect-[4/5] w-full rounded-[1.35rem] object-cover sm:rounded-[1.5rem]"
 											width="960"

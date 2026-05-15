@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button"
 
 const groups = {
   Frontend: ["React 19", "React Router", "Vite", "Astro"],
-  Platform: ["Cloudflare Workers", "TypeScript", "Edge deployment", "pnpm monorepo"],
+  Platform: ["Edge & static hosting", "TypeScript", "Edge deployment", "pnpm monorepo"],
   Workflow: ["AI-assisted development", "Design systems", "Performance", "DX automation"],
 } as const
 
