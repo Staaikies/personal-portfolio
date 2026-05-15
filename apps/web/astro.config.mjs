@@ -4,64 +4,38 @@ import { defineConfig } from 'astro/config';
 import react from '@astrojs/react';
 import tailwindcss from '@tailwindcss/vite';
 
-/**
- * GitHub Pages (static):
- * - Default: `site` + `base` from `GITHUB_REPOSITORY_*` in CI (repo slug lowercased for `/base/` URLs).
- * - Custom domain / non-matching path: set repo Actions variables `PUBLIC_SITE_URL` and optionally
- *   `PUBLIC_BASE_PATH` (e.g. `https://skylardryden.com` and `/personal-portfolio` when the URL path
- *   must differ from the repository name).
- */
+/** CI sets these. Optional vars override domain or path when they differ from the repo slug. */
 const owner = process.env.GITHUB_REPOSITORY_OWNER;
 const repoFull = process.env.GITHUB_REPOSITORY;
 const repo = repoFull?.includes('/') ? repoFull.split('/')[1] : undefined;
+const siteUrl = process.env.PUBLIC_SITE_URL?.replace(/\/$/, '') || undefined;
+const baseOverride = process.env.PUBLIC_BASE_PATH?.trim();
 
-const publicSiteUrl = process.env.PUBLIC_SITE_URL?.replace(/\/$/, '') || undefined;
-const publicBasePathRaw = process.env.PUBLIC_BASE_PATH?.trim();
-
-/** @param {string} input */
-function normalizeBasePath(input) {
-  if (!input || input === '/') return '/';
-  const withLeading = input.startsWith('/') ? input : `/${input}`;
-  const trimmed = withLeading.replace(/\/+$/, '');
-  return trimmed === '' ? '/' : trimmed;
+function basePath(/** @type {string} */ raw) {
+  if (!raw || raw === '/') return '/';
+  const s = (raw.startsWith('/') ? raw : `/${raw}`).replace(/\/+$/, '');
+  return s || '/';
 }
 
-/** @type {string | undefined} */
 let site;
-/** @type {string} */
 let base = '/';
-
 if (owner && repo) {
-  const hostOwner = String(owner).toLowerCase();
-  const rlow = repo.toLowerCase();
-  site = publicSiteUrl || `https://${hostOwner}.github.io`;
-  base = publicBasePathRaw
-    ? normalizeBasePath(publicBasePathRaw)
-    : rlow === `${hostOwner}.github.io`
-      ? '/'
-      : `/${rlow}`;
-} else if (publicSiteUrl) {
-  site = publicSiteUrl;
-  if (publicBasePathRaw) base = normalizeBasePath(publicBasePathRaw);
-} else if (publicBasePathRaw) {
-  base = normalizeBasePath(publicBasePathRaw);
+  const ow = String(owner).toLowerCase();
+  const slug = repo.toLowerCase();
+  site = siteUrl || `https://${ow}.github.io`;
+  base = baseOverride ? basePath(baseOverride) : slug === `${ow}.github.io` ? '/' : `/${slug}`;
+} else if (siteUrl) {
+  site = siteUrl;
+  if (baseOverride) base = basePath(baseOverride);
+} else if (baseOverride) {
+  base = basePath(baseOverride);
 }
-
-const trailingSlash = base === '/' ? 'ignore' : 'always';
 
 export default defineConfig({
   ...(site ? { site } : {}),
   base,
-  trailingSlash,
+  trailingSlash: base === '/' ? 'ignore' : 'always',
   output: 'static',
-  build: {
-    assets: 'astro',
-    inlineStylesheets: 'always',
-  },
   integrations: [react()],
-
-  vite: {
-    base,
-    plugins: [tailwindcss()],
-  },
+  vite: { plugins: [tailwindcss()] },
 });
