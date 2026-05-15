@@ -5,14 +5,26 @@ import react from '@astrojs/react';
 import tailwindcss from '@tailwindcss/vite';
 
 /**
- * GitHub Pages only static build:
- * - `site` + `base` from `GITHUB_REPOSITORY_*` in CI (local dev defaults to `/`).
- * - `trailingSlash: 'always'` on project pages so URLs stay consistent under `/REPO/`.
- * - `build.assets: 'astro'` (no `_astro/`) and `inlineStylesheets: 'always'` so styles are not a separate fetch.
+ * GitHub Pages (static):
+ * - Default: `site` + `base` from `GITHUB_REPOSITORY_*` in CI (repo slug lowercased for `/base/` URLs).
+ * - Custom domain / non-matching path: set repo Actions variables `PUBLIC_SITE_URL` and optionally
+ *   `PUBLIC_BASE_PATH` (e.g. `https://skylardryden.com` and `/personal-portfolio` when the URL path
+ *   must differ from the repository name).
  */
 const owner = process.env.GITHUB_REPOSITORY_OWNER;
 const repoFull = process.env.GITHUB_REPOSITORY;
 const repo = repoFull?.includes('/') ? repoFull.split('/')[1] : undefined;
+
+const publicSiteUrl = process.env.PUBLIC_SITE_URL?.replace(/\/$/, '') || undefined;
+const publicBasePathRaw = process.env.PUBLIC_BASE_PATH?.trim();
+
+/** @param {string} input */
+function normalizeBasePath(input) {
+  if (!input || input === '/') return '/';
+  const withLeading = input.startsWith('/') ? input : `/${input}`;
+  const trimmed = withLeading.replace(/\/+$/, '');
+  return trimmed === '' ? '/' : trimmed;
+}
 
 /** @type {string | undefined} */
 let site;
@@ -20,14 +32,21 @@ let site;
 let base = '/';
 
 if (owner && repo) {
-  // Host is case-insensitive; normalize so canonical URLs match the live github.io host.
   const hostOwner = String(owner).toLowerCase();
-  site = `https://${hostOwner}.github.io`;
-  base =
-    repo.toLowerCase() === `${hostOwner}.github.io` ? '/' : `/${repo}`;
+  const rlow = repo.toLowerCase();
+  site = publicSiteUrl || `https://${hostOwner}.github.io`;
+  base = publicBasePathRaw
+    ? normalizeBasePath(publicBasePathRaw)
+    : rlow === `${hostOwner}.github.io`
+      ? '/'
+      : `/${rlow}`;
+} else if (publicSiteUrl) {
+  site = publicSiteUrl;
+  if (publicBasePathRaw) base = normalizeBasePath(publicBasePathRaw);
+} else if (publicBasePathRaw) {
+  base = normalizeBasePath(publicBasePathRaw);
 }
 
-/** GitHub project pages work more reliably with trailing-slash URLs and BASE_URL. */
 const trailingSlash = base === '/' ? 'ignore' : 'always';
 
 export default defineConfig({
@@ -42,7 +61,6 @@ export default defineConfig({
   integrations: [react()],
 
   vite: {
-    // Keep Vite base aligned with Astro `base` (Tailwind + subpath deploys).
     base,
     plugins: [tailwindcss()],
   },

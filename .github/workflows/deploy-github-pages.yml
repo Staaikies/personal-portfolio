@@ -42,21 +42,45 @@ jobs:
         env:
           GITHUB_REPOSITORY_OWNER: ${{ github.repository_owner }}
           GITHUB_REPOSITORY: ${{ github.repository }}
+          # Optional: custom domain and/or URL path when they differ from github.io defaults.
+          # Repo Settings → Secrets and variables → Actions → Variables
+          PUBLIC_SITE_URL: ${{ vars.PUBLIC_SITE_URL }}
+          PUBLIC_BASE_PATH: ${{ vars.PUBLIC_BASE_PATH }}
 
-      - name: Verify Pages base in HTML
+      - name: Verify dist output and HTML asset paths
         shell: bash
+        env:
+          PUBLIC_BASE_PATH: ${{ vars.PUBLIC_BASE_PATH }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
         run: |
           set -euo pipefail
+          HTML="apps/web/dist/index.html"
+          test -f "$HTML"
+          test -d apps/web/dist/astro
+          n=$(find apps/web/dist/astro -type f | wc -l)
+          echo "dist/astro file count: $n"
+          if [ "$n" -lt 4 ]; then echo "Missing built assets under dist/astro"; ls -laR apps/web/dist; exit 1; fi
+
           REPO="${GITHUB_REPOSITORY#*/}"
           OWNER="${GITHUB_REPOSITORY%%/*}"
           RLOW=$(echo "$REPO" | tr '[:upper:]' '[:lower:]')
           OLOW=$(echo "$OWNER" | tr '[:upper:]' '[:lower:]')
-          HTML="apps/web/dist/index.html"
-          # Styles are inlined; font files still load from /REPO/astro/... (build.assets + base).
-          if [ "$RLOW" = "$OLOW.github.io" ]; then
-            grep -Fq 'url(/astro/' "$HTML" || { echo "Expected root-relative /astro/ asset URLs in HTML"; exit 1; }
+
+          if [ -n "${PUBLIC_BASE_PATH:-}" ] && [ "${PUBLIC_BASE_PATH}" != "/" ]; then
+            pb=$(echo "$PUBLIC_BASE_PATH" | tr '[:upper:]' '[:lower:]')
+            pb=${pb#/}
+            pb=${pb%/}
+            PREFIX="/$pb"
+          elif [ "$RLOW" = "$OLOW.github.io" ]; then
+            PREFIX=""
           else
-            grep -Fq "url(/${REPO}/astro/" "$HTML" || { echo "Expected /${REPO}/astro/ asset URLs in HTML"; head -c 2500 "$HTML"; exit 1; }
+            PREFIX="/$RLOW"
+          fi
+
+          if [ -z "$PREFIX" ] || [ "$PREFIX" = "/" ]; then
+            grep -Fq 'url(/astro/' "$HTML" || { echo "Expected url(/astro/...) in HTML"; exit 1; }
+          else
+            grep -Fq "url(${PREFIX}/astro/" "$HTML" || { echo "Expected url(${PREFIX}/astro/...) in HTML"; head -c 3000 "$HTML"; exit 1; }
           fi
 
       - name: Upload artifact
