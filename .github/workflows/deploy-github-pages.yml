@@ -1,5 +1,6 @@
 # Build static site and deploy to GitHub Pages.
-# Enable Pages in repo Settings → Pages → Source: GitHub Actions.
+# IMPORTANT: In repo Settings → Pages, set Source to "GitHub Actions".
+# If Source is "Deploy from a branch", GitHub runs Jekyll on the repo and will fail on *.astro files.
 name: Deploy GitHub Pages
 
 on:
@@ -23,15 +24,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      # Omit pnpm version here: action reads `packageManager` from root package.json (single source of truth).
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
-        with:
-          version: 10
 
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version-file: ".nvmrc"
           cache: pnpm
 
       - name: Install
